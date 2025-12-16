@@ -1,6 +1,7 @@
 import { createClient } from 'next-sanity'
 
 import { apiVersion, dataset, projectId } from '../env'
+import type { Intro, Event } from '../types'
 
 export const client = createClient({
   projectId,
@@ -9,11 +10,20 @@ export const client = createClient({
   useCdn: true, // Set to false if statically generating pages, using ISR or tag-based revalidation
 })
 
-export const getIntro = async () => {
+export const getIntro = async (): Promise<Intro[]> => {
   return client.fetch(`*[_type == "intro"]{
     text,
     imageLarge,
     imageMedium,
     imageSmall
+  }`)
+}
+
+export const getEvents = async (): Promise<Event[]> => {
+  return client.fetch(`*[_type == "events"]{
+    date,
+    location,
+    venue,
+    url
   }`)
 }

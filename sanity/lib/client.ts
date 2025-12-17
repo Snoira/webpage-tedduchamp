@@ -1,6 +1,6 @@
 import { createClient } from 'next-sanity'
 
-import { apiVersion, dataset, projectId } from '@/sanity/env'
+import { apiVersion, dataset, projectId } from '@/env'
 import type { Intro, Event } from '@/sanity/types'
 
 export const client = createClient({

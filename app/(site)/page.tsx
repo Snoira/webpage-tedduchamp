@@ -2,7 +2,7 @@ import Image from "next/image";
 import { getIntro, getEvents } from "../../sanity/lib/client";
 import { urlFor } from "@/sanity/lib/image";
 import EventCard from "@/components/EventCard";
-
+import ContactForm from "@/components/ContactForm";
 
 export default async function Home() {
 
@@ -80,6 +80,7 @@ export default async function Home() {
           For bookings, inquiries, or just to say hello, reach out to us at{" "}
           <a href="mailto:hello@tedduchamp.com">hello@tedduchamp.com</a>
         </p>
+        <ContactForm />
       </section>
     </main>
   );

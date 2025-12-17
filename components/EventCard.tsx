@@ -1,7 +1,6 @@
-import type { Event } from "../sanity/types";
+import type { Event } from "@/sanity/types";
 
 export default function EventCard({ event }: { event: Event }) {
-    console.log(event);
     const { date, venue, location, url } = event;
     const eventDate = new Date(date);
     const formattedDate = eventDate.toLocaleDateString("en-US", {

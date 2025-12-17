@@ -35,6 +35,7 @@ const londrinaShadow = Londrina_Shadow({
 
 const merriweather = Merriweather({
   variable: "--font-merriweather",
+  weight: ["300", "400", "700", "900"],
   subsets: ["latin"],
 });
 

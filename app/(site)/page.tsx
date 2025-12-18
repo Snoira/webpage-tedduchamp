@@ -1,20 +1,28 @@
 import Image from "next/image";
-import { getIntro, getEvents } from "../../sanity/lib/client";
+import { getIntro, getEvents, getSections } from "@/sanity/lib/client";
 import { urlFor } from "@/sanity/lib/image";
 import EventCard from "@/components/EventCard";
 import ContactForm from "@/components/ContactForm";
+import Section from "@/components/Section";
+
+export const smallTextStyle = "text-lg md:text-2xl font-merriweather md:max-w-2xl";
+export const headingStyle = "text-5xl md:text-8xl text-center font-londrina-solid font-light";
+export const largeTextStyle = "text-[clamp(24px,5vw,40px)] md:text-5xl md:max-w-4xl font-merriweather";
+export const sectionSpacing = "mx-auto my-8 md:my-12";
+export const sectionStyle = "w-full flex flex-col items-center gap-12 py-16 px-4 md:px-8 lg:px-12";
 
 export default async function Home() {
 
   const intro = await getIntro();
   const { imageLarge, imageMedium, imageSmall, text } = intro[0] || {};
   const events = await getEvents();
+  const sections = await getSections();
 
   return (
     <main className="flex flex-col items-center justify-between py-32">
-      <div className="flex flex-col items-center md:gap-32 w-full">
+      <div className="flex flex-col items-center w-full">
         <p className="text-3xl md:text-[4vw] font-averia-serif-libre">we are</p>
-        <h1 className="text-[clamp(80px,25vw,100px)]/24 text-center sm:text-[18vw] py-32 md:py-0 font-londrina-solid">Ted Duchamp</h1>
+        <h1 className="text-[clamp(80px,25vw,100px)]/24 text-center sm:text-[18vw] font-londrina-solid">Ted Duchamp</h1>
         <div className="grid grid-rows-3 md:grid-rows-2 grid-cols-4 md:grid-cols-6 gap-y-4 md:gap-0 auto-rows-max w-full items-center">
           {
             imageLarge ? (
@@ -56,14 +64,15 @@ export default async function Home() {
             ) : <div className="col-start-4 md:col-start-5 col-span-1 row-start-3 md:row-start-2 aspect-square bg-green-500"></div>
           }
         </div>
-        <section id="about">
-          <p className="text-[clamp(24px,5vw,40px)] md:text-5xl p-4 md:max-w-4xl font-merriweather">
-            {text ?? "Loading intro text..."}
-          </p>
-        </section>
       </div>
-      <section id="live" className="w-full flex flex-col items-center gap-12 py-16 px-4">
-        <h2 className="text-5xl md:text-8xl text-center font-londrina-solid font-light">Come see us play</h2>
+      {
+        sections.map((section) => (
+          <Section key={section._id} content={section} />
+        ))
+      }
+
+      <section id="live" className={`${sectionStyle} ${sectionSpacing}`}>
+        <h2 className={headingStyle}>Come see us play</h2>
         {events.length > 0 ? (
           <div className="border-t border-foreground">
             {events.map((event, index) => (
@@ -71,12 +80,12 @@ export default async function Home() {
             ))}
           </div>
         ) : (
-          <p className="text-lg font-merriweather">No upcoming events.</p>
+          <p className={smallTextStyle}>No upcoming events.</p>
         )}
       </section>
-      <section id="contact" className="w-full flex flex-col items-center gap-8 py-16 px-4">
-        <h2 className="text-5xl md:text-8xl text-center font-londrina-solid font-light">Get in touch</h2>
-        <p className="text-xl md:text-3xl font-merriweather text-center max-w-2xl">
+      <section id="contact" className={`${sectionStyle} ${sectionSpacing}`}>
+        <h2 className={headingStyle}>Get in touch</h2>
+        <p className={`${smallTextStyle} text-center`}>
           For bookings, inquiries, or just to say hello, reach out to us at{" "}
           <a href="mailto:hello@tedduchamp.com">hello@tedduchamp.com</a>
         </p>

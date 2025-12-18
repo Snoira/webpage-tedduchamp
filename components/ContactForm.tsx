@@ -22,7 +22,7 @@ function Input({ id, label, type, error, required, ...props }: Props) {
         : `${baseClasses} border-gray-300 focus:ring-blue-300 focus:border-blue-500`;
 
     return (
-        <div className="flex flex-col mb-4">
+        <div className="flex flex-col mb-4 md:mb-6">
             <label
                 className="mb-2 text-xl md:text-3xl uppercase font-londrina-solid font-light"
                 htmlFor={id}

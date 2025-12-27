@@ -4,11 +4,6 @@ const intro = {
     type: "document",
     fields: [
         {
-            name: "text",
-            title: "Intro Text",
-            type: "string",
-        },
-        {
             name: "imageLarge",
             title: "Large Image",
             type: "image",

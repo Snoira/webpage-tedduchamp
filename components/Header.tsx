@@ -8,9 +8,6 @@ import IconLink from '@/components/IconLink';
 
 //TODO: 
 // Animate menu open/close so it slides down/up
-// Look into configuring Next.js Image component to work with Storyblok images
-// Improve Storyblok error handeling (missing data/components)
-// Render storyblok types using storyblok CLI
 
 const sections = [
     { name: 'About', href: '#about' },
@@ -43,17 +40,18 @@ export default function Header() {
     const navRef = useRef<HTMLElement>(null);
     const toggleButtonRef = useRef<HTMLButtonElement>(null);
     const FOCUS_DELAY = 100;
-    const MOBILE_BREAKPOINT = 768;
+    // const MOBILE_BREAKPOINT = 768;
+
 
     const toggleNav = (state?: boolean | null) => {
         setShowNav(state ?? !showNav);
     };
 
-    const handleResize = () => {
-        if (window.innerWidth >= MOBILE_BREAKPOINT) {
-            setShowNav(false);
-        }
-    };
+    // const handleResize = () => {
+    //     if (window.innerWidth >= MOBILE_BREAKPOINT) {
+    //         setShowNav(false);
+    //     }
+    // };
 
     const handleKeyDown = useCallback((e: KeyboardEvent) => {
         if (e.key === 'Escape' && showNav) {
@@ -87,10 +85,10 @@ export default function Header() {
     }, [showNav]);
 
 
-    useEffect(() => {
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, [handleResize]);
+    // useEffect(() => {
+    //     window.addEventListener('resize', handleResize);
+    //     return () => window.removeEventListener('resize', handleResize);
+    // }, [handleResize]);
 
     useEffect(() => {
         document.addEventListener('keydown', handleKeyDown);
@@ -174,7 +172,7 @@ export default function Header() {
                             <IconLink
                                 url={socMed.url}
                                 platform={socMed.platform as 'instagram' | 'spotify' | 'youtube' | 'tiktok'}
-                                closeNavFunc={() => setShowNav(false)}
+                                closeNavFunc={() => toggleNav(false)}
                             />
                         </li>
                     ))}

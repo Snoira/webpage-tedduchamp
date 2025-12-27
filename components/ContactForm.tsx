@@ -186,7 +186,7 @@ export default function ContactForm() {
                 )}
                 {status === "Success" && (
                     <div className="p-4 bg-green-100 border border-green-400 text-green-700 rounded-md">
-                        <p className="font-merriweather">Thank you for your message! We'll get back to you soon.</p>
+                        <p className="font-merriweather">Thank you for your message! We&apos;ll get back to you soon.</p>
                     </div>
                 )}
                 {status === "Error" && (

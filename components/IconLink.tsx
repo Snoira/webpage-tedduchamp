@@ -51,7 +51,7 @@ export default function IconLink({ url, platform, closeNavFunc }: IconLinkProps)
             target="_blank"
             rel="noopener noreferrer"
             className="inline-block hover:text-primary hover:scale-110 focus:text-primary transition-all duration-300 ease-in-out"
-            onClick={() => { closeNavFunc ? closeNavFunc() : null }}
+            onClick={() => { if (closeNavFunc) closeNavFunc() }}
         >
             {Icons[iconKey as keyof typeof Icons]}
         </a>

@@ -12,7 +12,6 @@ export const client = createClient({
 
 export const getIntro = async (): Promise<Intro[]> => {
   return client.fetch(`*[_type == "intro"]{
-    text,
     imageLarge,
     imageMedium,
     imageSmall

@@ -4,17 +4,12 @@ import { urlFor } from "@/sanity/lib/image";
 import EventCard from "@/components/EventCard";
 import ContactForm from "@/components/ContactForm";
 import Section from "@/components/Section";
-
-export const smallTextStyle = "text-lg md:text-2xl font-merriweather md:max-w-2xl indent-4 md:indent-6";
-export const headingStyle = "text-6xl md:text-8xl text-center font-londrina-solid font-normal tracking-tight";
-export const largeTextStyle = "text-4xl md:text-6xl md:max-w-4xl font-merriweather indent-8 md:indent-30 tracking-tight md:tracking-tight md:leading-18 md:pt-30";
-export const sectionStyle = "w-full flex flex-col items-center gap-20 py-20 md:gap-30 md:py-30 px-4 md:px-8";
-export const textSectionStyle = "gap-30 py-30 md:gap-60 md:py-60";
+import { smallTextStyle, headingStyle, sectionStyle } from "@/lib/styles";
 
 export default async function Home() {
 
   const intro = await getIntro();
-  const { imageLarge, imageMedium, imageSmall, text } = intro[0] || {};
+  const { imageLarge, imageMedium, imageSmall } = intro[0] || {};
   const events = await getEvents();
   const sections = await getSections();
 
@@ -72,7 +67,7 @@ export default async function Home() {
       }
 
       <section id="live" className={`${sectionStyle} md:max-w-4xl`}>
-        <h2 className={headingStyle}>Come see us play</h2>
+        <h2 className={`${headingStyle}`}>Come see us play</h2>
         {events.length > 0 ? (
           <div className="border-t border-foreground w-full md:max-w-4xl">
             {events.map((event, index) => (
@@ -80,11 +75,11 @@ export default async function Home() {
             ))}
           </div>
         ) : (
-          <p className={smallTextStyle}>No upcoming events.</p>
+          <p className={`${smallTextStyle}`}>No upcoming events.</p>
         )}
       </section>
       <section id="contact" className={`${sectionStyle} max-w-4xl`}>
-        <h2 className={headingStyle}>Get in touch</h2>
+        <h2 className={`${headingStyle}`}>Get in touch</h2>
         {/* <p className={`${smallTextStyle} text-center`}>
           For bookings, inquiries, or just to say hello, reach out to us at{" "}
           <a href="mailto:hello@tedduchamp.com">hello@tedduchamp.com</a>

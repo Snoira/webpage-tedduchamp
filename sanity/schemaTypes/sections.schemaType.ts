@@ -1,3 +1,5 @@
+import { Rule } from "sanity";
+
 const sections = {
     name: "sections",
     title: "Sections",
@@ -23,7 +25,7 @@ const sections = {
                 source: "title",
                 maxLength: 96,
             },
-            validation: (Rule: any) => Rule.required(),
+            validation: (Rule: Rule) => Rule.required(),
         },
         {
             name: "textContent",

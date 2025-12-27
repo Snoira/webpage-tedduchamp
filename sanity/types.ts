@@ -7,7 +7,6 @@ export type Event = {
     url: string;
 };
 export type Intro = {
-    text: string;
     imageLarge: Image;
     imageMedium: Image;
     imageSmall: Image;
@@ -20,7 +19,8 @@ export type Section = {
     images?: Image[];
     _id: string;
 };
-type Image = {
+
+export type Image = {
     _type: "image";
     asset: {
         _ref: string;

@@ -1,7 +1,7 @@
 import { createClient } from 'next-sanity'
 
 import { apiVersion, dataset, projectId } from '@/env'
-import type { Intro, Event } from '@/sanity/types'
+import type { Intro, Event, Section } from '@/sanity/types'
 
 export const client = createClient({
   projectId,
@@ -12,7 +12,6 @@ export const client = createClient({
 
 export const getIntro = async (): Promise<Intro[]> => {
   return client.fetch(`*[_type == "intro"]{
-    text,
     imageLarge,
     imageMedium,
     imageSmall
@@ -25,5 +24,16 @@ export const getEvents = async (): Promise<Event[]> => {
     location,
     venue,
     url
+  }`)
+}
+
+export const getSections = async (): Promise<Section[]> => {
+  return client.fetch(`*[_type == "sections"]{
+    title,
+    heading,
+    slug,
+    textContent,
+    images,
+    _id
   }`)
 }

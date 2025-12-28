@@ -16,12 +16,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Use secrets
-        env:
-          NEXT_PUBLIC_SANITY_DATASET: ${{ secrets.NEXT_PUBLIC_SANITY_DATASET }}
-          FORM_API_KEY: ${{ secrets.FORM_API_KEY }}
-          SANITY_AUTH_TOKEN: ${{ secrets.SANITY_AUTH_TOKEN }}
-
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
@@ -38,4 +32,8 @@ jobs:
         run: npm run lint
 
       - name: Run build
+        env:
+          NEXT_PUBLIC_SANITY_DATASET: ${{ secrets.NEXT_PUBLIC_SANITY_DATASET }}
+          FORM_API_KEY: ${{ secrets.FORM_API_KEY }}
+          SANITY_AUTH_TOKEN: ${{ secrets.SANITY_AUTH_TOKEN }}
         run: npm run build

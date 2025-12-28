@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useState, useEffect, useRef, useCallback } from 'react';
 import Image from 'next/image';
-import * as logo from "@/public/ted-duchamp-text-logo.svg";
+import logo from "@/public/ted-duchamp-text-logo.svg";
 import IconLink from '@/components/IconLink';
 
 interface Section {

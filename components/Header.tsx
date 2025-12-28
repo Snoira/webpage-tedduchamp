@@ -6,23 +6,36 @@ import Image from 'next/image';
 import * as logo from "@/public/ted-duchamp-text-logo.svg";
 import IconLink from '@/components/IconLink';
 
-//TODO: 
-// Animate menu open/close so it slides down/up
+interface Section {
+    name: string;
+    href: string;
+}
 
-const sections = [
+interface SocialMediaLink {
+    platform: 'instagram' | 'spotify' | 'youtube' | 'tiktok';
+    url: string;
+}
+
+interface NavLinkProps {
+    href: string;
+    children: React.ReactNode;
+    onClick: () => void;
+}
+
+const sections: Section[] = [
     { name: 'About', href: '#about' },
     { name: 'Live', href: '#live' },
     { name: 'Contact', href: '#contact' },
 ];
 
-const socialMediaLinks = [
+const socialMediaLinks: SocialMediaLink[] = [
     { platform: 'instagram', url: 'https://www.instagram.com/tedduchampband/' },
     { platform: 'spotify', url: 'https://open.spotify.com/artist/62ayUk67CmlRfK4NbA9gve' },
     { platform: 'youtube', url: 'https://www.youtube.com/@TEDDUCHAMP' },
     { platform: 'tiktok', url: 'https://www.tiktok.com/@tedduchamp' },
 ];
 
-function NavLink({ href, children, onClick }: { href: string; children: React.ReactNode; onClick: () => void }) {
+function NavLink({ href, children, onClick }: NavLinkProps) {
     return (
         <Link
             href={href}
@@ -40,18 +53,10 @@ export default function Header() {
     const navRef = useRef<HTMLElement>(null);
     const toggleButtonRef = useRef<HTMLButtonElement>(null);
     const FOCUS_DELAY = 100;
-    // const MOBILE_BREAKPOINT = 768;
-
 
     const toggleNav = (state?: boolean | null) => {
         setShowNav(state ?? !showNav);
     };
-
-    // const handleResize = () => {
-    //     if (window.innerWidth >= MOBILE_BREAKPOINT) {
-    //         setShowNav(false);
-    //     }
-    // };
 
     const handleKeyDown = useCallback((e: KeyboardEvent) => {
         if (e.key === 'Escape' && showNav) {
@@ -83,12 +88,6 @@ export default function Header() {
             }
         }
     }, [showNav]);
-
-
-    // useEffect(() => {
-    //     window.addEventListener('resize', handleResize);
-    //     return () => window.removeEventListener('resize', handleResize);
-    // }, [handleResize]);
 
     useEffect(() => {
         document.addEventListener('keydown', handleKeyDown);

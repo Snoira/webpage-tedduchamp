@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Averia_Serif_Libre, Londrina_Solid, Londrina_Sketch, Londrina_Outline, Londrina_Shadow, Merriweather } from "next/font/google";
 import "@/app/globals.css";
-import Header from "../../components/Header";
+import Header from "@/components/Header";
 
 const averiaSerifLibre = Averia_Serif_Libre({
   variable: "--font-averia-serif-libre",
@@ -50,6 +50,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
     <html lang="en">
       <body

@@ -117,7 +117,7 @@ export default function Header() {
     }, [showNav]);
 
     return (
-        <header className="px-8 md:px-16 pt-8 pb-4 sticky top-0 bg-background">
+        <header className="px-8 md:px-16 pt-8 pb-4 sticky top-0 bg-background z-100">
             <nav
                 ref={navRef}
                 className={`${showNav ? 'h-dvh grid grid-rows-[6rem_auto] items-end' : 'grid'} md:h-auto md:grid-rows-none md:grid-cols-3 md:items-center`}

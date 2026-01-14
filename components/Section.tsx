@@ -18,7 +18,7 @@ type ImagesProps = {
 
 function Text({ textContent, textWithImage }: TextProps) {
     return (
-        <div className={`${textWithImage ? smallTextStyle : largeTextStyle}`}>
+        <div className={`grid ${textWithImage ? smallTextStyle : largeTextStyle}`}>
             <PortableText value={textContent} />
         </div>
     );

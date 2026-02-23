@@ -1,39 +1,64 @@
-import { createClient } from 'next-sanity'
+import { createClient } from "next-sanity";
 
-import { apiVersion, dataset, projectId } from '@/env'
-import type { Intro, Event, Section } from '@/sanity/types'
+import { apiVersion, dataset, projectId, isPreview } from "@/env";
+import type { Intro, Event, Section } from "@/sanity/types";
 
-export const client = createClient({
+const sanityConfig = {
   projectId,
   dataset,
   apiVersion,
-  useCdn: true, // Set to false if statically generating pages, using ISR or tag-based revalidation
-})
+  useCdn: false,
+};
+
+const publicClient = createClient({
+  ...sanityConfig,
+  perspective: "published",
+});
+
+const previewClient = createClient({
+  ...sanityConfig,
+  token: process.env.SANITY_READ_TOKEN,
+  perspective: "drafts",
+});
+
+export const client = isPreview ? previewClient : publicClient;
 
 export const getIntro = async (): Promise<Intro[]> => {
-  return client.fetch(`*[_type == "intro"]{
-    imageLarge,
-    imageMedium,
-    imageSmall
-  }`)
-}
+  return client.fetch(
+    `*[_type == "intro"]{
+      imageLarge,
+      imageMedium,
+      imageSmall
+    }`,
+    {},
+    { next: { tags: ["intro"] } }
+  );
+};
 
 export const getEvents = async (): Promise<Event[]> => {
-  return client.fetch(`*[_type == "events"]{
-    date,
-    location,
-    venue,
-    url
-  }`)
-}
+  return client.fetch(
+    `*[_type == "events"] | order(date asc){
+      date,
+      location,
+      venue,
+      url
+    }`,
+    {},
+    { next: { tags: ["events"] } }
+  );
+};
 
 export const getSections = async (): Promise<Section[]> => {
-  return client.fetch(`*[_type == "sections"]{
-    title,
-    heading,
-    slug,
-    textContent,
-    images,
-    _id
-  }`)
-}
+  return client.fetch(
+    `*[_type == "sections"]{
+          title,
+          heading,
+          slug,
+          textContent,
+          images,
+          _id
+          }`,
+    {},
+    { next: { tags: ["sections"] } }
+  );
+};

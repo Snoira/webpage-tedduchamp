@@ -1,9 +1,9 @@
 import { safeFetch } from "@/sanity/lib/client";
 import type { Intro, Event, Section } from "@/sanity/types";
 
-export const getIntro = async (): Promise<Intro[]> => {
+export const getIntro = async (): Promise<Intro> => {
   return safeFetch({
-    query: `*[_type == "intro"]{
+    query: `*[_type == "intro"][0]{
       imageLarge,
       imageMedium,
       imageSmall

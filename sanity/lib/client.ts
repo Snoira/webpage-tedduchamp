@@ -1,7 +1,13 @@
 import { createClient } from "next-sanity";
 
 import { apiVersion, dataset, projectId, isPreview } from "@/env";
-import type { Intro, Event, Section } from "@/sanity/types";
+
+type SafeFetchOptions = {
+  query: string;
+  params?: Record<string, unknown>;
+  tags?: string[];
+  label: string;
+};
 
 const sanityConfig = {
   projectId,
@@ -23,42 +29,29 @@ const previewClient = createClient({
 
 export const client = isPreview ? previewClient : publicClient;
 
-export const getIntro = async (): Promise<Intro[]> => {
-  return client.fetch(
-    `*[_type == "intro"]{
-      imageLarge,
-      imageMedium,
-      imageSmall
-    }`,
-    {},
-    { next: { tags: ["intro"] } }
-  );
-};
+export async function safeFetch<T>({
+  query,
+  params = {},
+  tags = [],
+  label,
+}: SafeFetchOptions): Promise<T> {
+  try {
+    return await client.fetch<T>(query, params, {
+      next: {
+        tags,
+      },
+    });
+  } catch (error) {
+    console.error({
+      message: "Sanity query failed",
+      label,
+      query,
+      params,
+      tags,
+      timestamp: new Date().toISOString(),
+      error: error instanceof Error ? error.message : error,
+    });
 
-export const getEvents = async (): Promise<Event[]> => {
-  return client.fetch(
-    `*[_type == "events"] | order(date asc){
-      date,
-      location,
-      venue,
-      url
-    }`,
-    {},
-    { next: { tags: ["events"] } }
-  );
-};
-
-export const getSections = async (): Promise<Section[]> => {
-  return client.fetch(
-    `*[_type == "sections"]{
-          title,
-          heading,
-          slug,
-          textContent,
-          images,
-          _id
-          }`,
-    {},
-    { next: { tags: ["sections"] } }
-  );
-};
+    return [] as T;
+  }
+}

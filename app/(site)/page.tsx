@@ -1,4 +1,4 @@
-import { getIntro, getEvents, getSections } from "@/sanity/lib/client";
+import { getIntro, getEvents, getSections } from "@/lib/utils/sanityQueries";
 import EventCard from "@/components/EventCard";
 import ContactForm from "@/components/ContactForm";
 import Section from "@/components/Section";

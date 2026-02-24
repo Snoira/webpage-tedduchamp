@@ -20,30 +20,17 @@ export const revalidateSecret = assertServerValue(
   "Missing environment variable: REVALIDATE_SECRET"
 );
 
+export const sanityReadToken = assertServerValue(
+  process.env.SANITY_READ_TOKEN,
+  "Missing environment variable: SANITY_READ_TOKEN"
+);
+
 const nodeEnv = process.env.NODE_ENV;
-const deployContext = process.env.CONTEXT;
 
-export const environment = (() => {
-  if (nodeEnv === "production") {
-    return "production";
-  }
-  if (deployContext === "deploy-preview" || deployContext === "branch-deploy") {
-    return "preview";
-  }
-  return "development";
-})();
-
-export const urls = {
-  development: "http://localhost:3000",
-  preview: "https://dev--tedduchampband.netlify.app/",
-  production: "https://tedduchamp.com/",
-};
-
-export const currentSiteUrl = (() => {
-  return urls[environment];
-})();
-
-export const isPreview = environment === "preview";
+export const siteUrl =
+  nodeEnv === "production"
+    ? "https://tedduchamp.com"
+    : "http://localhost:3000";
 
 function assertValue<T>(v: T | undefined, errorMessage: string): T {
   if (v === undefined) {
@@ -59,4 +46,3 @@ function assertServerValue<T>(v: T | undefined, errorMessage: string): T {
   }
   return assertValue(v, errorMessage);
 }
-

@@ -1,6 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { revalidateTag } from "next/cache";
-import { revalidateSecret, urls } from "@/env";
+import { revalidateSecret } from "@/env";
+
+const urls = {
+  development: "http://localhost:3000",
+  preview: "https://dev--tedduschampband.netlify.app",
+  production: "https://tedduchamp.com",
+};
 
 const allowedOrigins = [urls.development, urls.preview, urls.production];
 

@@ -1,13 +1,22 @@
 import type { Metadata } from "next";
-import { Averia_Serif_Libre, Londrina_Solid, Londrina_Sketch, Londrina_Outline, Londrina_Shadow, Merriweather } from "next/font/google";
+import { draftMode } from "next/headers";
+import {
+  Averia_Serif_Libre,
+  Londrina_Solid,
+  Londrina_Sketch,
+  Londrina_Outline,
+  Londrina_Shadow,
+  Merriweather,
+} from "next/font/google";
 import "@/app/globals.css";
 import Header from "@/components/Header";
+import PreviewBanner from "@/components/PreviewBanner";
 
 const averiaSerifLibre = Averia_Serif_Libre({
   variable: "--font-averia-serif-libre",
   weight: "400",
   subsets: ["latin"],
-}); 
+});
 
 const londrinaSolid = Londrina_Solid({
   variable: "--font-londrina-solid",
@@ -39,23 +48,25 @@ const merriweather = Merriweather({
   subsets: ["latin"],
 });
 
-
 export const metadata: Metadata = {
   title: "Ted Duchamp",
   description: "Official Website of Ted Duchamp",
 };
 
-export default function RootLayout({
+export const dynamic = "force-dynamic";
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
+  const { isEnabled } = await draftMode();
   return (
     <html lang="en">
       <body
         className={`${averiaSerifLibre.variable} ${londrinaSolid.variable} ${merriweather.variable} ${londrinaSketch.variable} ${londrinaOutline.variable} ${londrinaShadow.variable} antialiased`}
       >
+        {isEnabled && <PreviewBanner />}
         <Header />
         {children}
       </body>

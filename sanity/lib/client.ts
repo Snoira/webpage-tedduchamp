@@ -1,6 +1,7 @@
 import { createClient } from "next-sanity";
+import { draftMode } from "next/headers";
 
-import { apiVersion, dataset, projectId, isPreview } from "@/env";
+import { apiVersion, dataset, projectId, sanityReadToken } from "@/env";
 
 type SafeFetchOptions = {
   query: string;
@@ -23,11 +24,15 @@ const publicClient = createClient({
 
 const previewClient = createClient({
   ...sanityConfig,
-  token: process.env.SANITY_READ_TOKEN,
+  token: sanityReadToken,
   perspective: "drafts",
 });
 
-export const client = isPreview ? previewClient : publicClient;
+export async function getClient() {
+  const { isEnabled } = await draftMode();
+
+  return isEnabled ? previewClient : publicClient;
+}
 
 export async function safeFetch<T>({
   query,
@@ -35,6 +40,8 @@ export async function safeFetch<T>({
   tags = [],
   label,
 }: SafeFetchOptions): Promise<T> {
+  const client = await getClient();
+
   try {
     return await client.fetch<T>(query, params, {
       next: {

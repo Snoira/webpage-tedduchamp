@@ -20,6 +20,11 @@ export const revalidateSecret = assertServerValue(
   "Missing environment variable: REVALIDATE_SECRET"
 );
 
+export const sanityReadToken = assertServerValue(
+  process.env.SANITY_READ_TOKEN,
+  "Missing environment variable: SANITY_READ_TOKEN"
+);
+
 const nodeEnv = process.env.NODE_ENV;
 const deployContext = process.env.CONTEXT;
 
@@ -59,4 +64,3 @@ function assertServerValue<T>(v: T | undefined, errorMessage: string): T {
   }
   return assertValue(v, errorMessage);
 }
-

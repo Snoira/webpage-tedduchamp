@@ -9,7 +9,7 @@ import { defineConfig } from "sanity";
 import { structureTool } from "sanity/structure";
 
 // Go to https://www.sanity.io/docs/api-versioning to learn how API versioning works
-import { apiVersion, dataset, projectId, currentSiteUrl } from "./env";
+import { apiVersion, dataset, projectId, siteUrl } from "./env";
 import { schema } from "./sanity/schemaTypes";
 import { structure } from "./sanity/structure";
 
@@ -28,7 +28,7 @@ export default defineConfig({
   ],
   document: {
     productionUrl: async () => {
-      return `${currentSiteUrl}/api/draft-mode/enable?redirect=/`;
+      return `${siteUrl}/api/draft-mode/enable?redirect=/`;
     },
   },
 });

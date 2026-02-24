@@ -26,29 +26,11 @@ export const sanityReadToken = assertServerValue(
 );
 
 const nodeEnv = process.env.NODE_ENV;
-const deployContext = process.env.CONTEXT;
 
-export const environment = (() => {
-  if (nodeEnv === "production") {
-    return "production";
-  }
-  if (deployContext === "deploy-preview" || deployContext === "branch-deploy") {
-    return "preview";
-  }
-  return "development";
-})();
-
-export const urls = {
-  development: "http://localhost:3000",
-  preview: "https://dev--tedduchampband.netlify.app/",
-  production: "https://tedduchamp.com/",
-};
-
-export const currentSiteUrl = (() => {
-  return urls[environment];
-})();
-
-export const isPreview = environment === "preview";
+export const siteUrl =
+  nodeEnv === "production"
+    ? "https://tedduchamp.com"
+    : "http://localhost:3000";
 
 function assertValue<T>(v: T | undefined, errorMessage: string): T {
   if (v === undefined) {

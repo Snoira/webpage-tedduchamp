@@ -1,64 +1,39 @@
-import { createClient } from "next-sanity";
-import { draftMode } from "next/headers";
+import { createClient } from 'next-sanity'
 
-import { apiVersion, dataset, projectId, sanityReadToken } from "@/env";
+import { apiVersion, dataset, projectId } from '@/env'
+import type { Intro, Event, Section } from '@/sanity/types'
 
-type SafeFetchOptions = {
-  query: string;
-  params?: Record<string, unknown>;
-  tags?: string[];
-  label: string;
-};
-
-const sanityConfig = {
+export const client = createClient({
   projectId,
   dataset,
   apiVersion,
-  useCdn: false,
-};
+  useCdn: true, // Set to false if statically generating pages, using ISR or tag-based revalidation
+})
 
-const publicClient = createClient({
-  ...sanityConfig,
-  perspective: "published",
-});
-
-const previewClient = createClient({
-  ...sanityConfig,
-  token: sanityReadToken,
-  perspective: "drafts",
-});
-
-export async function getClient() {
-  const { isEnabled } = await draftMode();
-
-  return isEnabled ? previewClient : publicClient;
+export const getIntro = async (): Promise<Intro[]> => {
+  return client.fetch(`*[_type == "intro"]{
+    imageLarge,
+    imageMedium,
+    imageSmall
+  }`)
 }
 
-export async function safeFetch<T>({
-  query,
-  params = {},
-  tags = [],
-  label,
-}: SafeFetchOptions): Promise<T> {
-  const client = await getClient();
+export const getEvents = async (): Promise<Event[]> => {
+  return client.fetch(`*[_type == "events"]{
+    date,
+    location,
+    venue,
+    url
+  }`)
+}
 
-  try {
-    return await client.fetch<T>(query, params, {
-      next: {
-        tags,
-      },
-    });
-  } catch (error) {
-    console.error({
-      message: "Sanity query failed",
-      label,
-      query,
-      params,
-      tags,
-      timestamp: new Date().toISOString(),
-      error: error instanceof Error ? error.message : error,
-    });
-
-    return [] as T;
-  }
+export const getSections = async (): Promise<Section[]> => {
+  return client.fetch(`*[_type == "sections"]{
+    title,
+    heading,
+    slug,
+    textContent,
+    images,
+    _id
+  }`)
 }

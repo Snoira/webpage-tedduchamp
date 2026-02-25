@@ -26,19 +26,15 @@ export const sanityReadToken = assertServerValue(
 );
 
 const nodeEnv = process.env.NODE_ENV;
-const netlifyContext =
-  process.env.CONTEXT || process.env.NEXT_PUBLIC_NETLIFY_CONTEXT;
-
-console.log("\n\nEnvironment variables:");
-console.log("NODE_ENV:", nodeEnv);
-console.log("Netlify CONTEXT:", netlifyContext, "CONTEXT: ", process.env.CONTEXT, "NEXT_PUBLIC_NETLIFY_CONTEXT: ", process.env.NEXT_PUBLIC_NETLIFY_CONTEXT);
+const netlifyContext = process.env.CONTEXT;
 
 type Environment = "development" | "preview" | "production";
 
 export const environment: Environment = (() => {
   if (
     netlifyContext === "branch-deploy" ||
-    netlifyContext === "deploy-preview"
+    netlifyContext === "deploy-preview" ||
+    (nodeEnv === "production" && !netlifyContext)
   ) {
     return "preview";
   }
@@ -47,8 +43,6 @@ export const environment: Environment = (() => {
   }
   return "development";
 })();
-
-console.log("Determined environment:", environment);
 
 export const urls: Record<Environment, string> = {
   development: "http://localhost:3000",
@@ -60,8 +54,7 @@ export const siteUrl = (() => {
   return urls[environment];
 })();
 
-console.log("Using site URL:", siteUrl);
-console.log("\n");
+console.log("ENVIRONMENT: ", environment, "SITEURL: ", siteUrl);
 
 function assertValue<T>(v: T | undefined, errorMessage: string): T {
   if (v === undefined) {

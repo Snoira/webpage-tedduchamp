@@ -1,3 +1,2 @@
 [build.environment]
   NEXT_PUBLIC_NETLIFY_CONTEXT = "$CONTEXT"
-  NEXT_PUBLIC_NETLIFY_URL= "$URL"

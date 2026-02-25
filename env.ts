@@ -29,11 +29,9 @@ const nodeEnv = process.env.NODE_ENV;
 const netlifyContext =
   process.env.CONTEXT || process.env.NEXT_PUBLIC_NETLIFY_CONTEXT;
 
-const netlifyURL = process.env.URL || process.env.NEXT_PUBLIC_NETLIFY_URL;
 console.log("\n\nEnvironment variables:");
 console.log("NODE_ENV:", nodeEnv);
-console.log("Netlify CONTEXT:", netlifyContext);
-console.log("Netlify URL:", netlifyURL);
+console.log("Netlify CONTEXT:", netlifyContext, "CONTEXT: ", process.env.CONTEXT, "NEXT_PUBLIC_NETLIFY_CONTEXT: ", process.env.NEXT_PUBLIC_NETLIFY_CONTEXT);
 
 type Environment = "development" | "preview" | "production";
 

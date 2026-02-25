@@ -1,26 +1,24 @@
-import { getIntro, getEvents, getSections } from "@/sanity/lib/client";
+import { getIntro, getEvents, getSections } from "@/lib/utils/sanityQueries";
 import EventCard from "@/components/EventCard";
 import ContactForm from "@/components/ContactForm";
 import Section from "@/components/Section";
 import { smallTextStyle, headingStyle, sectionStyle } from "@/lib/styles";
 import Hero from "@/components/Hero";
 
-
 export default async function Home() {
-
-  const intro = await getIntro();
-  const events = await getEvents();
-  const sections = await getSections();
-
+  const [intro, events, sections] = await Promise.all([
+    getIntro(),
+    getEvents(),
+    getSections(),
+  ]);
 
   return (
     <main className="flex flex-col items-center justify-between pb-32">
-      {intro.length > 0 && <Hero intro={intro[0] ?? {}} />}
-      {sections.length > 0 && (
+      {intro && <Hero intro={intro} />}
+      {sections.length > 0 &&
         sections.map((section) => (
           <Section key={section._id} content={section} />
-        ))
-      )}
+        ))}
 
       <section id="live" className={`${sectionStyle} md:max-w-4xl`}>
         <h2 className={`${headingStyle}`}>Come see us play</h2>

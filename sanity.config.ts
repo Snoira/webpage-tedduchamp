@@ -28,6 +28,7 @@ export default defineConfig({
   ],
   document: {
     productionUrl: async () => {
+      console.log("Generating production URL", siteUrl);
       return `${siteUrl}/api/draft-mode/enable?redirect=/`;
     },
   },

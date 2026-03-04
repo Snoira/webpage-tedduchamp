@@ -48,12 +48,11 @@ const merriweather = Merriweather({
   subsets: ["latin"],
 });
 
+
 export const metadata: Metadata = {
   title: "Ted Duchamp",
   description: "Official Website of Ted Duchamp",
 };
-
-export const dynamic = "force-dynamic";
 
 export default async function RootLayout({
   children,

@@ -3,7 +3,6 @@ import { revalidateTag } from "next/cache";
 import { parseBody } from "next-sanity/webhook";
 import { revalidateSecret } from "@/env";
 
-
 type WebhookPayload = {
   _type: string;
 };
@@ -27,8 +26,10 @@ export async function POST(req: NextRequest) {
 
     revalidateTag(body._type);
     return NextResponse.json({ revalidated: true, body });
-  } catch (error: Any) {
+  } catch (error: unknown) {
     console.log(error);
-    return new Response(error.message, { status: 500 });
+    const message =
+      error instanceof Error ? error.message : "Internal Server Error";
+    return new Response(message, { status: 500 });
   }
 }

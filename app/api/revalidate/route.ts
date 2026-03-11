@@ -1,58 +1,35 @@
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 import { revalidateTag } from "next/cache";
+import { parseBody } from "next-sanity/webhook";
 import { revalidateSecret } from "@/env";
 
-const urls = {
-  development: "http://localhost:3000",
-  preview: "https://dev--tedduschampband.netlify.app",
-  production: "https://tedduchamp.com",
+type WebhookPayload = {
+  tag: string;
 };
 
-const allowedOrigins = [urls.development, urls.preview, urls.production];
-
-function addCorsHeaders(response: NextResponse, origin: string | null) {
-  if (origin && allowedOrigins.includes(origin)) {
-    response.headers.set("Access-Control-Allow-Origin", origin);
-  }
-
-  response.headers.set("Access-Control-Allow-Methods", "POST, OPTIONS");
-  response.headers.set(
-    "Access-Control-Allow-Headers",
-    "Content-Type, x-revalidate-secret, x-revalidate-tag"
-  );
-
-  return response;
-}
-
 export async function POST(req: NextRequest) {
-  const origin = req.headers.get("origin");
-
-  const secret = req.headers.get("x-revalidate-secret");
-  if (secret !== revalidateSecret) {
-    const response = NextResponse.json(
-      { message: "Invalid secret" },
-      { status: 401 }
+  try {
+    const { isValidSignature, body } = await parseBody<WebhookPayload>(
+      req,
+      revalidateSecret
     );
-    return addCorsHeaders(response, origin);
+
+    if (!isValidSignature) {
+      const message = "invalid signature";
+      return new Response(JSON.stringify({ message, isValidSignature, body }), {
+        status: 401,
+      });
+    } else if (!body?.tag) {
+      const message = "Bad Request";
+      return new Response(JSON.stringify({ message, body }), { status: 400 });
+    }
+
+    revalidateTag(body.tag);
+    return NextResponse.json({ revalidated: true, body });
+  } catch (error: unknown) {
+    console.log(error);
+    const message =
+      error instanceof Error ? error.message : "Internal Server Error";
+    return new Response(message, { status: 500 });
   }
-
-  const tag = req.headers.get("x-revalidate-tag");
-  if (!tag) {
-    const response = NextResponse.json(
-      { message: "Missing revalidation tag" },
-      { status: 400 }
-    );
-    return addCorsHeaders(response, origin);
-  }
-
-  revalidateTag(tag);
-
-  const response = NextResponse.json({ revalidated: true, tag });
-  return addCorsHeaders(response, origin);
-}
-
-export async function OPTIONS(req: NextRequest) {
-  const origin = req.headers.get("origin");
-  const response = new NextResponse(null, { status: 200 });
-  return addCorsHeaders(response, origin);
 }

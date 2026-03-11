@@ -46,6 +46,7 @@ export async function safeFetch<T>({
     return await client.fetch<T>(query, params, {
       next: {
         tags,
+        revalidate: 3600
       },
     });
   } catch (error) {

@@ -1,5 +1,5 @@
 import { safeFetch } from "@/sanity/lib/client";
-import type { Intro, Event, Section } from "@/sanity/types";
+import type { Intro, Event, Section, SiteSettings } from "@/sanity/types";
 
 export const getIntro = async (): Promise<Intro> => {
   return safeFetch({
@@ -38,5 +38,17 @@ export const getSections = async (): Promise<Section[]> => {
           }`,
     tags: ["sections"],
     label: "getSections",
+  });
+};
+
+export const getSiteSettings = async (): Promise<SiteSettings> => {
+  return safeFetch({
+    query: `*[_type == "siteSettings"][0]{
+      title,
+      description,
+      seo,
+    }`,
+    tags: ["siteSettings"],
+    label: "getSiteSettings",
   });
 };

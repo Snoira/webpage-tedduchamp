@@ -16,8 +16,14 @@ export type Section = {
   heading?: string;
   slug: string;
   textContent?: PortableTextBlock[];
-  images?: Image[];
+  images?: ImageObj[];
   _id: string;
+};
+
+export type ImageObj = {
+  _type: "imageObj";
+  alt: string;
+  caption: string;
 };
 
 export type Image = {

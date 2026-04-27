@@ -23,7 +23,6 @@ interface NavLinkProps {
 }
 
 const sections: Section[] = [
-    { name: 'About', href: '#about' },
     { name: 'Live', href: '#live' },
     { name: 'Contact', href: '#contact' },
 ];
